@@ -42,6 +42,8 @@ if rg -F --quiet "$SUPABASE_SERVICE_ROLE_KEY" .next/static; then echo 'secret fo
 3. Add the Vercel deployment URL, `https://mesandigitalventures.com/athleteos`, and `http://localhost:3000/athleteos` to Supabase **Auth > URL Configuration > Redirect URLs**.
 4. Deploy. No database migration step runs from this repository.
 
+For the complete Vercel deployment and company-domain rewrite procedure, see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
 ## Database ownership
 
 All database schema changes, migrations, grants, functions, and database tests belong in [`mesandigital/mdv-athleteos-training`](https://github.com/mesandigital/mdv-athleteos-training). This repository intentionally contains no migrations. It calls the existing service-role-only `set_coach_status` and `create_coach_code` functions and reads the existing tables.
