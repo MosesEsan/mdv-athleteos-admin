@@ -8,6 +8,8 @@ import { isAdminEmail } from "@/lib/auth-policy";
 import { getAdminEmails } from "@/lib/env";
 import { createAuthClient } from "@/lib/supabase/server";
 
+const APP_PATH = "/athleteos";
+
 export type SignInState = { error?: string; sent?: boolean };
 
 export async function sendMagicLink(
@@ -26,7 +28,7 @@ export async function sendMagicLink(
   const supabase = await createAuthClient();
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: { emailRedirectTo: `${origin}/auth/callback` },
+    options: { emailRedirectTo: `${origin}${APP_PATH}/auth/callback` },
   });
 
   if (error) return { error: error.message };
@@ -39,5 +41,5 @@ export async function signOut() {
   await requireAdmin();
   const supabase = await createAuthClient();
   await supabase.auth.signOut();
-  redirect("/sign-in");
+  redirect(`${APP_PATH}/sign-in`);
 }
