@@ -41,5 +41,5 @@ export async function signOut() {
   await requireAdmin();
   const supabase = await createAuthClient();
   await supabase.auth.signOut();
-  redirect(`${APP_PATH}/sign-in`);
+  redirect("/sign-in");
 }
