@@ -101,6 +101,8 @@ In the existing company-site Vercel project, add this rewrite under **Project Se
 
 Replace `<admin-deployment-domain>` with the stable production domain for the admin project. Use a production alias or custom subdomain rather than a temporary preview URL so the company-site rewrite does not change after each deployment.
 
+Important: test the rewrite in the actual Vercel project before switching traffic. Vercel can preserve the original `Host` header for a cross-project external rewrite, which may cause a redirect loop when the destination is another Vercel project. If that happens, keep the company-site deployment unchanged and use the admin project's stable URL (or a dedicated `admin.mesandigitalventures.com` host) until the two apps are served by a same-project proxy or edge function.
+
 After deploying the company site rewrite, verify:
 
 ```bash
