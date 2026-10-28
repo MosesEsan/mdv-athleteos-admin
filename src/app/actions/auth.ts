@@ -8,7 +8,7 @@ import { isAdminEmail } from "@/lib/auth-policy";
 import { getAdminEmails } from "@/lib/env";
 import { createAuthClient } from "@/lib/supabase/server";
 
-const APP_PATH = "/athleteos";
+const APP_PATH = "/athleteos/admin";
 
 export type SignInState = { error?: string; sent?: boolean };
 
