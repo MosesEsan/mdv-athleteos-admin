@@ -1,65 +1,39 @@
 # AthleteOS Training Admin operations record
 
-This page records the setup that has been completed and the remaining domain-linking limitation. It is safe to keep in the repository: it contains no credentials or secret values.
+This record describes the deployment as verified on 28 October 2026. It contains no secret values.
 
-## Current deployment
+## Live setup
 
-- Repository: `MosesEsan/mdv-athleteos-admin`
-- Production Vercel project: `mdv-athleteos-admin`
-- Live admin URL: <https://mdv-athleteos-admin.vercel.app/athleteos>
-- Base path: `/athleteos`
-- Pull request: [#1](https://github.com/MosesEsan/mdv-athleteos-admin/pull/1), merged into `main`
-- Deployment source: `main` after the admin-dashboard pull request was merged
+- Admin repository: [`MosesEsan/mdv-athleteos-admin`](https://github.com/MosesEsan/mdv-athleteos-admin)
+- Admin Vercel project: `mdv-athleteos-training` under `mosesesans-projects`
+- Stable admin alias: <https://mdv-athleteos-admin.vercel.app/athleteos/admin>
+- Company site Vercel project: `mesan-digital-ventures`
+- Company entry point: <https://mesandigitalventures.com/athleteos/admin>
+- App base path: `/athleteos/admin`
+- Company-site routing commit: `1b8c917` (`Route AthleteOS admin through company domain`)
 
-The Vercel project has these production environment variable names configured:
+The similarly named Vercel project `mdv-athleteos-admin` is empty. The admin app is currently hosted in `mdv-athleteos-training`. The stable alias is explicitly assigned to the current admin deployment, and the company-site `vercel.json` rewrites point to that alias. If the app moves projects, move the environment variables, update the alias or rewrite destination, and verify sign-in before switching traffic.
 
-```text
-SUPABASE_URL
-SUPABASE_ANON_KEY
-SUPABASE_SERVICE_ROLE_KEY
-ADMIN_EMAILS
-```
+## Environment and sign-in
 
-The service-role variable is server-only. No value belongs in this document, in Git, or in a `NEXT_PUBLIC_` variable.
+The active admin project has `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAILS` configured for Production. The last two are server-only. Sign-in uses Supabase magic links; there is no dashboard password. The signed-in email must be present in `ADMIN_EMAILS` to access protected pages or server actions.
 
-## Authentication configuration
-
-Sign-in uses Supabase Auth magic links. The server checks the signed-in email against the comma-separated `ADMIN_EMAILS` allowlist on every protected page and server action. There is no dashboard password to document.
-
-The Supabase Auth redirect allowlist currently contains:
+Supabase Auth allows these new callbacks:
 
 ```text
-https://mesandigitalventures.com/athleteos/auth/callback
-https://mdv-athleteos-admin.vercel.app/athleteos/auth/callback
-http://localhost:3000/athleteos/auth/callback
+https://mesandigitalventures.com/athleteos/admin/auth/callback
+https://mdv-athleteos-admin.vercel.app/athleteos/admin/auth/callback
+http://localhost:3000/athleteos/admin/auth/callback
 ```
 
-For an operator test, open the live admin URL, enter an allowlisted email, and use the one-time link delivered by Supabase. An email outside `ADMIN_EMAILS` must receive `Not authorised` and must not receive a sign-in link.
+The three older `/athleteos/auth/callback` entries remain. To operate the dashboard, open the company entry point, enter an allowlisted email, and follow the one-time link delivered by Supabase.
 
-## Verification completed
+## Verification
 
-The following checks were run before deployment:
+The new admin build passed `npm test` (11 tests), `npm run lint`, `npm run typecheck`, and `npm run build`. Searching `.next/static` found no `SUPABASE_SERVICE_ROLE_KEY` string. The production company URL returns a redirect to `/athleteos/admin/sign-in`, which returns 200; its CSS asset returns 200. The company homepage content hash was unchanged by deployment. A live browser attempt with an email outside `ADMIN_EMAILS` returned `Not authorised`.
 
-```bash
-npm test
-npm run lint
-npm run typecheck
-npm run build
-rg -F 'SUPABASE_SERVICE_ROLE_KEY' .next/static
-```
-
-The build, lint, typecheck, and tests passed. The browser-bundle search returned no matches for `SUPABASE_SERVICE_ROLE_KEY`; the service-role value was not committed or shipped to client code.
-
-## Custom domain status
-
-`https://mesandigitalventures.com` remains attached to the existing company-site Vercel project. A cross-project rewrite from `/athleteos` to the admin project was tested, but Vercel preserved the original host and produced a redirect loop. That deployment was rolled back.
-
-Therefore the supported live entry point is currently:
-
-<https://mdv-athleteos-admin.vercel.app/athleteos>
-
-Do not re-add the cross-project rewrite without testing it in a preview deployment. To serve the admin at the company domain, use a dedicated host such as `admin.mesandigitalventures.com`, or implement a same-project proxy/edge function that forwards the request without preserving the company-site host.
+An end-to-end magic-link sign-in from the company domain still needs a mailbox test with an allowlisted address. Sign in as an allowlisted operator and inspect Overview, Coaches, and Invite Codes. The unit tests cover the allowlist and protected action behaviour, but cannot prove email delivery.
 
 ## Database ownership
 
-The admin repository contains no migrations. Database schema, grants, functions, and database tests remain owned by [`mesandigital/mdv-athleteos-training`](https://github.com/mesandigital/mdv-athleteos-training).
+The admin repository contains no migrations. Database schema, grants, functions, and database tests belong in [`mesandigital/mdv-athleteos-training`](https://github.com/mesandigital/mdv-athleteos-training).
