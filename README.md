@@ -9,7 +9,7 @@ The app uses Supabase Auth magic links for sign-in. Every protected page and eve
 1. Install dependencies with `npm install`.
 2. Copy `.env.example` to `.env.local`.
 3. Set `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and the comma-separated `ADMIN_EMAILS` allowlist.
-4. Add `http://localhost:3000` to Supabase **Auth > URL Configuration > Redirect URLs**.
+4. Add `http://localhost:3000/athleteos/auth/callback` to Supabase **Auth > URL Configuration > Redirect URLs**.
 5. Run `npm run dev` and open `http://localhost:3000`.
 
 The app is configured with the `/athleteos` base path. Locally, open `http://localhost:3000/athleteos`.
@@ -39,10 +39,12 @@ if rg -F --quiet "$SUPABASE_SERVICE_ROLE_KEY" .next/static; then echo 'secret fo
 
 1. Import `mesandigital/mdv-athleteos-admin` into Vercel.
 2. In the project environment-variable settings, add `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAILS`.
-3. Add the Vercel deployment URL, `https://mesandigitalventures.com/athleteos`, and `http://localhost:3000/athleteos` to Supabase **Auth > URL Configuration > Redirect URLs**.
+3. Add `https://mdv-athleteos-admin.vercel.app/athleteos/auth/callback`, `https://mesandigitalventures.com/athleteos/auth/callback`, and `http://localhost:3000/athleteos/auth/callback` to Supabase **Auth > URL Configuration > Redirect URLs**.
 4. Deploy. No database migration step runs from this repository.
 
 For the complete Vercel deployment and company-domain rewrite procedure, see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
+For the current production status and operator checklist, see [`docs/OPERATIONS.md`](docs/OPERATIONS.md).
 
 ## Database ownership
 
