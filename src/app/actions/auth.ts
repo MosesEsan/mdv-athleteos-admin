@@ -1,6 +1,5 @@
 import "server-only";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { requireAdmin } from "@/lib/auth";
@@ -8,11 +7,9 @@ import { isAdminEmail } from "@/lib/auth-policy";
 import { getAdminEmails } from "@/lib/env";
 import { createAuthClient } from "@/lib/supabase/server";
 
-const APP_PATH = "/athleteos";
+export type SignInState = { error?: string };
 
-export type SignInState = { error?: string; sent?: boolean };
-
-export async function sendMagicLink(
+export async function signIn(
   _state: SignInState,
   formData: FormData,
 ): Promise<SignInState> {
@@ -23,16 +20,19 @@ export async function sendMagicLink(
     return { error: "Not authorised" };
   }
 
-  const headerStore = await headers();
-  const origin = headerStore.get("origin") ?? "http://localhost:3000";
-  const supabase = await createAuthClient();
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: `${origin}${APP_PATH}/auth/callback` },
-  });
+  const password = String(formData.get("password") ?? "");
+  if (!password) return { error: "Enter your password." };
 
-  if (error) return { error: error.message };
-  return { sent: true };
+  const supabase = await createAuthClient();
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error || !data.user) return { error: "Email or password is incorrect." };
+  if (!isAdminEmail(data.user.email, getAdminEmails())) {
+    await supabase.auth.signOut();
+    return { error: "Not authorised" };
+  }
+
+  redirect("/");
 }
 
 export async function signOut() {

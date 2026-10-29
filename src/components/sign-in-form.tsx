@@ -13,11 +13,12 @@ export function SignInForm({ action: signInAction }: { action: (state: SignInSta
     <form action={action} className="formStack">
       <label htmlFor="email">Admin email</label>
       <input id="email" name="email" type="email" autoComplete="email" required />
+      <label htmlFor="password">Password</label>
+      <input id="password" name="password" type="password" autoComplete="current-password" required />
       <button type="submit" disabled={pending}>
-        {pending ? "Sending link..." : "Send magic link"}
+        {pending ? "Signing in..." : "Sign in"}
       </button>
       {state.error ? <p className="error" role="alert">{state.error}</p> : null}
-      {state.sent ? <p className="success" role="status">Check your email for the sign-in link.</p> : null}
     </form>
   );
 }

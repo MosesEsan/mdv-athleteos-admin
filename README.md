@@ -2,17 +2,17 @@
 
 A small, light-theme administration dashboard for AthleteOS Training. It lets authorised operators review coach applications, approve or reject coaches, manage coach invite codes, and monitor headline usage counts.
 
-The app uses Supabase Auth magic links for sign-in. Every protected page and every server action performs a server-side allowlist check against `ADMIN_EMAILS`. Privileged database reads and mutations use the service-role key in server-only modules; the key is never exposed through a public environment variable.
+The app uses Supabase Auth email and password sign-in. Every protected page and every server action performs a server-side allowlist check against `ADMIN_EMAILS`. Privileged database reads and mutations use the service-role key in server-only modules; the key is never exposed through a public environment variable.
 
 ## Local setup
 
 1. Install dependencies with `npm install`.
 2. Copy `.env.example` to `.env.local`.
 3. Set `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and the comma-separated `ADMIN_EMAILS` allowlist.
-4. Add `http://localhost:3000` to Supabase **Auth > URL Configuration > Redirect URLs**.
-5. Run `npm run dev` and open `http://localhost:3000`.
+4. Ensure each email in `ADMIN_EMAILS` has an existing Supabase Auth account with a password in the Athlete OS Training project. The app does not offer public sign-up or password reset.
+5. Run `npm run dev` and open `http://localhost:3000/athleteos/admin`.
 
-The app is configured with the `/athleteos` base path. Locally, open `http://localhost:3000/athleteos`.
+The app is configured with the `/athleteos/admin` base path.
 
 Before pushing, run:
 
@@ -37,12 +37,16 @@ if rg -F --quiet "$SUPABASE_SERVICE_ROLE_KEY" .next/static; then echo 'secret fo
 
 ## Vercel setup
 
-1. Import `mesandigital/mdv-athleteos-admin` into Vercel.
+1. Import `MosesEsan/mdv-athleteos-admin` into Vercel, or use the existing `mdv-athleteos-training` Vercel project that currently hosts this app.
 2. In the project environment-variable settings, add `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAILS`.
-3. Add the Vercel deployment URL, `https://mesandigitalventures.com/athleteos`, and `http://localhost:3000/athleteos` to Supabase **Auth > URL Configuration > Redirect URLs**.
+3. Ensure each admin account has a password set in Supabase Auth. Password sign-in does not use redirect URLs.
 4. Deploy. No database migration step runs from this repository.
 
 For the complete Vercel deployment and company-domain rewrite procedure, see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
+For the current production status and operator checklist, see [`docs/OPERATIONS.md`](docs/OPERATIONS.md).
+
+The company-domain entry point is <https://mesandigitalventures.com/athleteos/admin>.
 
 ## Database ownership
 
