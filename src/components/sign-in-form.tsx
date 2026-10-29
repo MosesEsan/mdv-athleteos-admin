@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
 
 import type { SignInState } from "@/app/actions/auth";
 
@@ -15,6 +16,7 @@ export function SignInForm({ action: signInAction }: { action: (state: SignInSta
       <input id="email" name="email" type="email" autoComplete="email" required />
       <label htmlFor="password">Password</label>
       <input id="password" name="password" type="password" autoComplete="current-password" required />
+      <Link className="authTextLink authForgotLink" href="/forgot-password">Forgot your password?</Link>
       <button type="submit" disabled={pending}>
         {pending ? "Signing in..." : "Sign in"}
       </button>

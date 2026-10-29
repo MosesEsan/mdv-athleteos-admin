@@ -9,7 +9,7 @@ describe("server authorization boundaries", () => {
   it.each(["src/app/(admin)/page.tsx", "src/app/(admin)/coaches/page.tsx", "src/app/(admin)/invite-codes/page.tsx"])("checks admin authorization in %s", (path) => {
     expect(read(path)).toContain("await requireAdmin()");
   });
-  it.each(["src/app/actions/coaches.ts", "src/app/actions/invite-codes.ts"])("starts server-only and authorizes every privileged action in %s", (path) => {
+  it.each(["src/app/actions/coaches.ts", "src/app/actions/invite-codes.ts", "src/app/actions/coach-password-reset.ts"])("starts server-only and authorizes every privileged action in %s", (path) => {
     const source = read(path);
     expect(source.startsWith('import "server-only";')).toBe(true);
     expect([...source.matchAll(/await requireAdmin\(\)/g)]).toHaveLength([...source.matchAll(/export async function /g)].length);
@@ -32,5 +32,15 @@ describe("server authorization boundaries", () => {
     expect(source.startsWith('import "server-only";')).toBe(true);
     expect(source).toContain("getServiceRoleConfig");
     expect(source).not.toContain("NEXT_PUBLIC_");
+  });
+  it("guards the recovery callback and password update", () => {
+    const callback = read("src/app/auth/recovery/route.ts");
+    const resetPage = read("src/app/reset-password/page.tsx");
+    const actions = read("src/app/actions/password-recovery.ts");
+    expect(callback.startsWith('import "server-only";')).toBe(true);
+    expect(callback).toContain("isAdminEmail(data.user.email, getAdminEmails())");
+    expect(resetPage).toContain("isAdminEmail(data.user.email, getAdminEmails())");
+    expect(actions.startsWith('import "server-only";')).toBe(true);
+    expect(actions).toContain("await requireAdmin()");
   });
 });
