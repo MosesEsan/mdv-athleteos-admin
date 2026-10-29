@@ -36,7 +36,7 @@ Import [`MosesEsan/mdv-athleteos-admin`](https://github.com/MosesEsan/mdv-athlet
 
 ## 3. Configure Supabase Auth
 
-In the Athlete OS Training Supabase project, confirm that Email authentication is enabled and that each address in `ADMIN_EMAILS` has an existing Auth user with a password. This dashboard provides sign-in only; account creation and password changes are handled by a Supabase project administrator. Do not put a password in Git, Vercel environment variables, or this document.
+In the Athlete OS Training Supabase project, confirm that Email authentication is enabled and that each address in `ADMIN_EMAILS` has an existing Auth user with a password. This dashboard provides sign-in only; account creation and password changes are handled by a Supabase project administrator. For a user who previously used only magic links, the administrator can set a password directly with Supabase's [Auth Admin `updateUserById` API](https://supabase.com/docs/reference/javascript/auth-admin-updateuserbyid) from a trusted server environment. The account owner must enter the new password themselves. Do not put a password in Git, Vercel environment variables, or this document.
 
 Password sign-in does not use Auth redirect URLs or a callback route. Older callback allowlist entries may remain for older deployments, but the current admin app does not use them.
 

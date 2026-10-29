@@ -18,7 +18,7 @@ The similarly named Vercel project `mdv-athleteos-admin` is empty. The admin app
 
 The active admin project has `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAILS` configured for Production. The last two are server-only. Sign-in uses the admin user's Supabase Auth email and password. The signed-in email must be present in `ADMIN_EMAILS` to access protected pages or server actions. The dashboard does not create accounts or reset passwords.
 
-Password sign-in does not use the previously configured Auth callback URLs. To operate the dashboard, open the company entry point and enter the credentials of an existing allowlisted Supabase Auth account. A Supabase project administrator must set a password for an existing admin user if that user only signed in through magic links before this change.
+Password sign-in does not use the previously configured Auth callback URLs. To operate the dashboard, open the company entry point and enter the credentials of an existing allowlisted Supabase Auth account. A Supabase project administrator must set a password for an existing admin user if that user only signed in through magic links before this change. Supabase's [Auth Admin `updateUserById` API](https://supabase.com/docs/reference/javascript/auth-admin-updateuserbyid) supports setting it directly without an email redirect; the account owner should enter the credential in a trusted environment.
 
 ## Verification
 
