@@ -1,5 +1,7 @@
 import { setCoachStatus } from "@/app/actions/coaches";
 import { InlineConfirmButton } from "@/components/inline-confirm-button";
+import { CoachPasswordResetButton } from "@/components/coach-password-reset-button";
+import { sendCoachPasswordReset } from "@/app/actions/coach-password-reset";
 import type { Coach, CoachStatus } from "@/lib/types";
 
 const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
@@ -20,6 +22,7 @@ export function CoachTable({ coaches, status }: { coaches: Coach[]; status: Coac
               <td>{dateFormatter.format(new Date(coach.signedUpAt))}</td>
               <td>{coach.activeClients}</td>
               <td><div className="actions">
+                <CoachPasswordResetButton action={sendCoachPasswordReset.bind(null, coach.id)} />
                 {status !== "approved" ? (
                   <form action={setCoachStatus.bind(null, coach.email, "approved")}><button type="submit">Approve</button></form>
                 ) : null}

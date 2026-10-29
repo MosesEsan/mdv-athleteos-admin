@@ -2,6 +2,8 @@
 
 A small, light-theme administration dashboard for AthleteOS Training. It lets authorised operators review coach applications, approve or reject coaches, manage coach invite codes, and monitor headline usage counts.
 
+On the Coaches page, an authorised admin can send a password reset link to a coach's verified Auth email. The link opens the AthleteOS Training mobile app, where the coach chooses a new password. The dashboard does not generate or email passwords.
+
 The app uses Supabase Auth email and password sign-in. Every protected page and every server action performs a server-side allowlist check against `ADMIN_EMAILS`. Privileged database reads and mutations use the service-role key in server-only modules; the key is never exposed through a public environment variable.
 
 ## Local setup

@@ -34,6 +34,12 @@ The Supabase Auth Redirect URLs now include the four recovery callback origins l
 
 An end-to-end recovery email and password change still requires the account owner. They should request a link from the company URL, open the email in the same browser, enter a new password, and sign in. This step cannot be completed by the deployment operator on their behalf.
 
+## Coach password reset
+
+The Coaches table has **Send reset link** for each coach. The server action checks the signed-in admin, confirms that the selected profile has role `coach`, then resolves that profile's Supabase Auth email. It requests a standard Supabase recovery email with `redirectTo=athleteostraining://auth/callback`. The mobile app already handles that link and shows its New password screen. This does not change the password in the admin dashboard or send a generated password.
+
+Keep `athleteostraining://auth/callback` in the Athlete OS Training Supabase Auth Redirect URLs. A coach needs the mobile app installed and must open the email on that device. Supabase email limits still apply. Admins should only send a link after the coach requests help; they should not ask the coach to share the resulting password.
+
 ## Database ownership
 
 The admin repository contains no migrations. Database schema, grants, functions, and database tests belong in [`mesandigital/mdv-athleteos-training`](https://github.com/mesandigital/mdv-athleteos-training).
