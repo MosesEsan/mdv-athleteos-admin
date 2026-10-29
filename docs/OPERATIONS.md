@@ -40,6 +40,8 @@ The Coaches table has **Send reset link** for each coach. The server action chec
 
 Keep `athleteostraining://auth/callback` in the Athlete OS Training Supabase Auth Redirect URLs. A coach needs the mobile app installed and must open the email on that device. Supabase email limits still apply. Admins should only send a link after the coach requests help; they should not ask the coach to share the resulting password.
 
+On 29 October 2026, `athleteostraining://auth/callback` was added to the Supabase Auth Redirect URLs. Commit `4e99506` was deployed to the active Vercel project as `mdv-athleteos-training-1adrpk106-mosesesans-projects.vercel.app`, and the stable `mdv-athleteos-admin.vercel.app` alias was assigned to it. The company-site rewrite uses that alias. The local checks passed: 26 tests, lint, typecheck, build, and no service-role variable name in `.next/static`. A real coach email and mobile reset have not been exercised.
+
 ## Database ownership
 
 The admin repository contains no migrations. Database schema, grants, functions, and database tests belong in [`mesandigital/mdv-athleteos-training`](https://github.com/mesandigital/mdv-athleteos-training).
