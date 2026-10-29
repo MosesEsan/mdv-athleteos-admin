@@ -22,7 +22,7 @@ Password sign-in does not use the previously configured Auth callback URLs. To o
 
 ## Verification
 
-The password sign-in build passed `npm test` (16 tests), `npm run lint`, `npm run typecheck`, and `npm run build`. Searching `.next/static` found no `SUPABASE_SERVICE_ROLE_KEY` string. The company URL routes to `/athleteos/admin/sign-in`; the company homepage content hash was unchanged by the earlier domain-routing deployment.
+The password sign-in build passed `npm test` (16 tests), `npm run lint`, `npm run typecheck`, and `npm run build`. Searching `.next/static` found no `SUPABASE_SERVICE_ROLE_KEY` string. The staged production deployment served the password field, and the stable admin alias now points to it. The company URL displays the email and password form; a live browser attempt with a non-allowlisted email returned `Not authorised`. The company homepage content hash was unchanged by the earlier domain-routing deployment.
 
 An end-to-end password sign-in from the company domain still needs a test with an existing allowlisted account. Sign in as an allowlisted operator and inspect Overview, Coaches, and Invite Codes. The unit tests cover allowlist checks and protected action behaviour; they do not verify the user's actual password.
 
