@@ -36,15 +36,9 @@ Import [`MosesEsan/mdv-athleteos-admin`](https://github.com/MosesEsan/mdv-athlet
 
 ## 3. Configure Supabase Auth
 
-In the Athlete OS Training Supabase project, open **Authentication > URL Configuration > Redirect URLs**. Allow these exact callbacks:
+In the Athlete OS Training Supabase project, confirm that Email authentication is enabled and that each address in `ADMIN_EMAILS` has an existing Auth user with a password. This dashboard provides sign-in only; account creation and password changes are handled by a Supabase project administrator. Do not put a password in Git, Vercel environment variables, or this document.
 
-```text
-https://mesandigitalventures.com/athleteos/admin/auth/callback
-https://mdv-athleteos-admin.vercel.app/athleteos/admin/auth/callback
-http://localhost:3000/athleteos/admin/auth/callback
-```
-
-These were added on 28 October 2026. The previous `/athleteos/auth/callback` entries remain for older deployments. Magic links use the request origin, so sign in from the domain where you intend to continue.
+Password sign-in does not use Auth redirect URLs or a callback route. Older callback allowlist entries may remain for older deployments, but the current admin app does not use them.
 
 ## 4. Route the company domain
 
@@ -75,7 +69,7 @@ curl -I -L https://mesandigitalventures.com/athleteos/admin
 curl -I https://mesandigitalventures.com/athleteos/admin/sign-in
 ```
 
-The first URL should redirect to the sign-in page, which should return 200. Verify an admin CSS asset loads under `/athleteos/admin/_next/static/`. Check that the homepage still renders and that a non-allowlisted email gets `Not authorised` without a magic link. Protected pages and server actions must reject unauthorised sessions. Then complete a magic-link sign-in with an allowlisted email and check Overview, Coaches, and Invite Codes.
+The first URL should redirect to the sign-in page, which should return 200. Verify an admin CSS asset loads under `/athleteos/admin/_next/static/`. Check that the homepage still renders and that a non-allowlisted email gets `Not authorised` without a Supabase password attempt. Protected pages and server actions must reject unauthorised sessions. Then sign in with an allowlisted email and password and check Overview, Coaches, and Invite Codes.
 
 ## Database ownership
 

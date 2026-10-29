@@ -16,23 +16,15 @@ The similarly named Vercel project `mdv-athleteos-admin` is empty. The admin app
 
 ## Environment and sign-in
 
-The active admin project has `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAILS` configured for Production. The last two are server-only. Sign-in uses Supabase magic links; there is no dashboard password. The signed-in email must be present in `ADMIN_EMAILS` to access protected pages or server actions.
+The active admin project has `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAILS` configured for Production. The last two are server-only. Sign-in uses the admin user's Supabase Auth email and password. The signed-in email must be present in `ADMIN_EMAILS` to access protected pages or server actions. The dashboard does not create accounts or reset passwords.
 
-Supabase Auth allows these new callbacks:
-
-```text
-https://mesandigitalventures.com/athleteos/admin/auth/callback
-https://mdv-athleteos-admin.vercel.app/athleteos/admin/auth/callback
-http://localhost:3000/athleteos/admin/auth/callback
-```
-
-The three older `/athleteos/auth/callback` entries remain. To operate the dashboard, open the company entry point, enter an allowlisted email, and follow the one-time link delivered by Supabase.
+Password sign-in does not use the previously configured Auth callback URLs. To operate the dashboard, open the company entry point and enter the credentials of an existing allowlisted Supabase Auth account. A Supabase project administrator must set a password for an existing admin user if that user only signed in through magic links before this change.
 
 ## Verification
 
-The new admin build passed `npm test` (11 tests), `npm run lint`, `npm run typecheck`, and `npm run build`. Searching `.next/static` found no `SUPABASE_SERVICE_ROLE_KEY` string. The production company URL returns a redirect to `/athleteos/admin/sign-in`, which returns 200; its CSS asset returns 200. The company homepage content hash was unchanged by deployment. A live browser attempt with an email outside `ADMIN_EMAILS` returned `Not authorised`.
+The password sign-in build passed `npm test` (16 tests), `npm run lint`, `npm run typecheck`, and `npm run build`. Searching `.next/static` found no `SUPABASE_SERVICE_ROLE_KEY` string. The company URL routes to `/athleteos/admin/sign-in`; the company homepage content hash was unchanged by the earlier domain-routing deployment.
 
-An end-to-end magic-link sign-in from the company domain still needs a mailbox test with an allowlisted address. Sign in as an allowlisted operator and inspect Overview, Coaches, and Invite Codes. The unit tests cover the allowlist and protected action behaviour, but cannot prove email delivery.
+An end-to-end password sign-in from the company domain still needs a test with an existing allowlisted account. Sign in as an allowlisted operator and inspect Overview, Coaches, and Invite Codes. The unit tests cover allowlist checks and protected action behaviour; they do not verify the user's actual password.
 
 ## Database ownership
 
