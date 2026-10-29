@@ -14,11 +14,13 @@ describe("server authorization boundaries", () => {
     expect(source.startsWith('import "server-only";')).toBe(true);
     expect([...source.matchAll(/await requireAdmin\(\)/g)]).toHaveLength([...source.matchAll(/export async function /g)].length);
   });
-  it("refuses an unlisted email before sending a magic link", () => {
+  it("refuses an unlisted email before password authentication", () => {
     const source = read("src/app/actions/auth.ts");
     expect(source.startsWith('import "server-only";')).toBe(true);
     expect(source).toContain("!isAdminEmail(email, getAdminEmails())");
     expect(source).toContain('error: "Not authorised"');
+    expect(source).toContain("signInWithPassword({ email, password })");
+    expect(source).not.toContain("signInWithOtp");
   });
 
   it("sends signed-in non-admin users to the not-authorised page", () => {
