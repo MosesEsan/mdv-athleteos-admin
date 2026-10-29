@@ -33,4 +33,14 @@ describe("server authorization boundaries", () => {
     expect(source).toContain("getServiceRoleConfig");
     expect(source).not.toContain("NEXT_PUBLIC_");
   });
+  it("guards the recovery callback and password update", () => {
+    const callback = read("src/app/auth/recovery/route.ts");
+    const resetPage = read("src/app/reset-password/page.tsx");
+    const actions = read("src/app/actions/password-recovery.ts");
+    expect(callback.startsWith('import "server-only";')).toBe(true);
+    expect(callback).toContain("isAdminEmail(data.user.email, getAdminEmails())");
+    expect(resetPage).toContain("isAdminEmail(data.user.email, getAdminEmails())");
+    expect(actions.startsWith('import "server-only";')).toBe(true);
+    expect(actions).toContain("await requireAdmin()");
+  });
 });

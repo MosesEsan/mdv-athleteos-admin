@@ -9,7 +9,7 @@ The app uses Supabase Auth email and password sign-in. Every protected page and 
 1. Install dependencies with `npm install`.
 2. Copy `.env.example` to `.env.local`.
 3. Set `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and the comma-separated `ADMIN_EMAILS` allowlist.
-4. Ensure each email in `ADMIN_EMAILS` has an existing Supabase Auth account with a password in the Athlete OS Training project. The app does not offer public sign-up or password reset.
+4. Ensure each email in `ADMIN_EMAILS` has an existing Supabase Auth account with a password in the Athlete OS Training project. The app does not offer public sign-up. An allowlisted admin can request a password reset from the sign-in page.
 5. Run `npm run dev` and open `http://localhost:3000/athleteos/admin`.
 
 The app is configured with the `/athleteos/admin` base path.
@@ -39,7 +39,7 @@ if rg -F --quiet "$SUPABASE_SERVICE_ROLE_KEY" .next/static; then echo 'secret fo
 
 1. Import `MosesEsan/mdv-athleteos-admin` into Vercel, or use the existing `mdv-athleteos-training` Vercel project that currently hosts this app.
 2. In the project environment-variable settings, add `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAILS`.
-3. Ensure each admin account has a password set in Supabase Auth. Password sign-in does not use redirect URLs.
+3. Ensure each admin account exists in Supabase Auth. Add the recovery callback URL to Supabase Auth Redirect URLs as described in the deployment guide.
 4. Deploy. No database migration step runs from this repository.
 
 For the complete Vercel deployment and company-domain rewrite procedure, see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
