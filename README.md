@@ -1,5 +1,7 @@
 # AthleteOS Training Admin
 
+The [documentation index](docs/INDEX.md) links the admin setup and deployment guides, operator procedures, push notification setup, mobile password recovery, and release documentation.
+
 A small, light-theme administration dashboard for AthleteOS Training. It lets authorised operators review coach applications, approve or reject coaches, manage coach invite codes, and monitor headline usage counts.
 
 On the Coaches page, an authorised admin can send a password reset link to a coach's verified Auth email. The link opens the AthleteOS Training mobile app, where the coach chooses a new password. The dashboard does not generate or email passwords.

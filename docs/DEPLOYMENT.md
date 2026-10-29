@@ -45,7 +45,10 @@ https://www.mesandigitalventures.com/athleteos/admin/auth/recovery
 https://mesandigitalventures.com/athleteos/admin/auth/recovery
 https://mdv-athleteos-admin.vercel.app/athleteos/admin/auth/recovery
 http://localhost:3000/athleteos/admin/auth/recovery
+athleteostraining://auth/callback
 ```
+
+The `athleteostraining://auth/callback` redirect is for **Send reset link** on the Coaches page. Supabase sends the coach an email whose recovery link opens the mobile app's new-password screen. The mobile app handles the recovery session and password update; the admin dashboard never creates a password. See [admin operations](OPERATIONS.md) and the [mobile deep-link guide](https://github.com/mesandigital/mdv-athleteos-training/blob/main/docs/deep-links.md).
 
 The hosted Supabase project currently requires custom SMTP before its email templates can be edited, so this flow uses Supabase's standard recovery link. Password sign-in itself does not use redirects. If the recovery email does not arrive, check the project's email provider and rate limits.
 
@@ -78,7 +81,9 @@ curl -I -L https://mesandigitalventures.com/athleteos/admin
 curl -I https://mesandigitalventures.com/athleteos/admin/sign-in
 ```
 
-The first URL should redirect to the sign-in page, which should return 200. Verify an admin CSS asset loads under `/athleteos/admin/_next/static/`. Check that the homepage still renders and that a non-allowlisted email gets `Not authorised` without a Supabase password attempt. Protected pages and server actions must reject unauthorised sessions. Then sign in with an allowlisted email and password and check Overview, Coaches, and Invite Codes. Also request a password reset, open the email in the same browser, set a new password, and sign in with it.
+The first URL should redirect to the sign-in page, which should return 200. Verify an admin CSS asset loads under `/athleteos/admin/_next/static/`. Check that the homepage still renders and that a non-allowlisted email gets `Not authorised` without a Supabase password attempt. Protected pages and server actions must reject unauthorised sessions. Then sign in with an allowlisted email and password and check Overview, Coaches, and Invite Codes. Also request an admin password reset, open the email in the same browser, set a new password, and sign in with it.
+
+For coach recovery, send a reset link from a coach row and verify that the email opens the AthleteOS Training app's new-password screen. This requires a real coach account and a device with the app installed; the production email-to-app flow still needs this manual check.
 
 ## Database ownership
 
